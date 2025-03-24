@@ -51,4 +51,12 @@ abstract class Controller
         $photoName=md5(time().$file->getFilename()).'.'.$file->getClientOriginalExtension();
         return $file->storeAs($path,$photoName,'public');
     }
+    public function deletePhoto($path)
+    {
+        $fullpath=storage_path('app/public/'.$path);
+        if(file_exists($fullpath))
+        {
+        unlink($fullpath);
+    }
+}
 }
