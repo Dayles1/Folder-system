@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Folder;
 use Illuminate\Http\Request;
+use App\Http\Resources\FolderResource;
 use App\Http\Requests\FolderStoreRequest;
 
 class FolderController extends Controller
@@ -17,7 +18,7 @@ class FolderController extends Controller
             'icon'=>$icon,
             'parent_id'=>$request->parent_id,
         ]);
-        return $this->success($folder,'Folder created successfully',201);
+        return $this->success(new FolderResource($folder->load('parent')),'Folder created successfully',201);
     }
-    
+
 }
