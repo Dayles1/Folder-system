@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Folder extends Model
 {
+    protected $fillable=[
+        'name',
+        'icon',
+        'parent_id',
+    ];
     public function parent()
     {
         return $this->belongsTo(Folder::class, 'parent_id');  // Tegishli ota kategoriya
