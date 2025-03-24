@@ -6,6 +6,7 @@ use App\Models\Folder;
 use Illuminate\Http\Request;
 use App\Http\Resources\FolderResource;
 use App\Http\Requests\FolderStoreRequest;
+use App\Http\Requests\FolderUpdateRequest;
 
 class FolderController extends Controller
 {
@@ -20,18 +21,21 @@ class FolderController extends Controller
         ]);
         return $this->success(new FolderResource($folder->load('parent')),'Folder created successfully',201);
     }
-    public function update(Request $request ,Folder $folder)
+    public function update(FolderUpdateRequest $request , $id)
     {
+        $folder=Folder::findOrFail($id);
         if($request->hasFile('icon'))
         {
-            $folder->icon->deletePhoto($folder->icon);
+            $this->deletePhoto($folder->icon);
             $icon=$this->uploadPhoto($request->file('icon'),'icons');
             $folder->icon=$icon;
         }
-        $folder->update([
-            'name'=>$request->name,
-        ]); 
-        return $this->success(new FolderResource($folder->load('parent','child')),'Folder updated successfully');
+       
+        $folder->name=$request->name;
+        $folder->save();
+        
+        
+        return $this->success(new FolderResource($folder->load('parent','children')),'Folder updated successfully');
     }
 
 }
