@@ -14,6 +14,13 @@ class FolderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'icon' => $this->icon,
+            'parent_id' => $this->parent_id,
+            'parent' => new FolderResource($this->whenLoaded('parent')),
+            'children' => FolderResource::collection($this->whenLoaded('children')),
+        ];
     }
 }
