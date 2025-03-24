@@ -11,7 +11,7 @@ class FolderStoreRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,9 @@ class FolderStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name'=>'required|string|max:30',
+            'icon'=>'required|image',
+            'parent_id'=>'nullable|exists:folders,id'
         ];
     }
 }
