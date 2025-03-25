@@ -10,6 +10,11 @@ use App\Http\Requests\FolderUpdateRequest;
 
 class FolderController extends Controller
 {
+    public function index(){
+        $folders=Folder::with('children.children')->whereNull('parent_id')->paginate(1);
+    
+        return $this->responsePagination($folders,FolderResource::collection($folders->items()),'Folders retrieved successfully');
+    }
     public function store(FolderStoreRequest $request)
     {
         $icon=$this->uploadPhoto($request->file('icon'),'icons');
