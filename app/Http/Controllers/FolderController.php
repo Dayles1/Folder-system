@@ -37,5 +37,11 @@ class FolderController extends Controller
         
         return $this->success(new FolderResource($folder->load('parent','children')),'Folder updated successfully');
     }
-
+    public function destroy($id)
+    {
+        $folder=Folder::findOrFail($id);
+        $this->deletePhoto($folder->icon);
+        $folder->delete();
+        return $this->success(null,'Folder deleted successfully');
+    }
 }
