@@ -51,7 +51,7 @@ class FolderController extends Controller
     }
     public function search(Request $request)
     {
-        $folders=Folder::where('name','like',"%$request->search%")->paginate(1);
+        $folders=Folder::where('name','like',"%$request->name%")->paginate(1);
         return $this->responsePagination($folders,FolderResource::collection($folders->items()),'Folders retrieved successfully');
     }
 }
