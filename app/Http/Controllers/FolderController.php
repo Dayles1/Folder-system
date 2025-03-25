@@ -11,7 +11,7 @@ use App\Http\Requests\FolderUpdateRequest;
 class FolderController extends Controller
 {
     public function index(){
-        $folders=Folder::with('children.children')->whereNull('parent_id')->paginate(1);
+        $folders=Folder::with('children.children')->whereNull('parent_id')->paginate(perPage: 2);
     
         return $this->responsePagination($folders,FolderResource::collection($folders->items()),'Folders retrieved successfully');
     }
@@ -48,5 +48,10 @@ class FolderController extends Controller
         $this->deletePhoto($folder->icon);
         $folder->delete();
         return $this->success(null,'Folder deleted successfully');
+    }
+    public function search(Request $request)
+    {
+        $folders=Folder::where('name','like',"%$request->search%")->paginate(1);
+        return $this->responsePagination($folders,FolderResource::collection($folders->items()),'Folders retrieved successfully');
     }
 }
